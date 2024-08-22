@@ -1,0 +1,18 @@
+# for the task runner
+flask
+flask_sqlalchemy
+psycopg2
+psycopg2-binary
+redis
+celery==4.4.6
+celery[redis]==4.4.6
+filelock
+
+# for the scripts
+requests
+pwntools
+numpy
+pycryptodome
+fuckpy3
+beautifulsoup4
+pytz
