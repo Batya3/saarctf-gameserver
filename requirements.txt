@@ -7,7 +7,7 @@ Flask-APScheduler
 psycopg2-binary
 redis
 celery
-celery[redis]==4.4.6
+celery[redis]
 flower<1.0.0
 setproctitle
 filelock
