@@ -18,10 +18,6 @@ import json
 import os
 from typing import Dict, Optional, Tuple, List, Any
 import redis
-import configparser
-
-config = configparser.ConfigParser()
-config.read('config.ini')
 
 if 'SAARCTF_CONFIG_DIR' in os.environ:
 	basedir = os.path.abspath(os.environ['SAARCTF_CONFIG_DIR'])
