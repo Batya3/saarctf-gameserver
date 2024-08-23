@@ -19,29 +19,41 @@ import os
 from typing import Dict, Optional, Tuple, List, Any
 import redis
 
-# Установим путь к файлу конфигурации в той же директории, где находится сам скрипт
-basedir = os.path.dirname(os.path.abspath(__file__))
-config_file_path = os.path.join(basedir, 'config.json')
+if 'SAARCTF_CONFIG_DIR' in os.environ:
+	basedir = os.path.abspath(os.environ['SAARCTF_CONFIG_DIR'])
+else:
+	basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+possible_config_files = [
+	basedir + '/config_test.json',
+	basedir + '/config2.json',
+	basedir + '/config.json'
+]
+if 'SAARCTF_CONFIG' in os.environ:
+	possible_config_files = [os.environ['SAARCTF_CONFIG']] + possible_config_files
 
 VPN_BASE_DIR = os.path.join(basedir, 'vpn')
 CLOUDCONFIG_FILE = os.path.join(basedir, 'cloud-status.json')
 
 # Load configuration file
 CONFIG: Dict[str, Any] = {}
+CONFIG_FILE = None
+for configfile in possible_config_files:
+	if os.path.exists(configfile):
+		with open(configfile, 'rb') as f:
+			CONFIG = json.loads(f.read())
+			CONFIG_FILE = configfile
+		break
+if not CONFIG:
+	raise Exception('No config file found! Candidates: ' + ', '.join(possible_config_files))
 
-# Проверка на существование файла config.json
-if os.path.exists(config_file_path):
-    with open(config_file_path, 'rb') as f:
-        CONFIG = json.loads(f.read())
-else:
-    raise Exception(f'Config file not found: {config_file_path}')
 
 def config_clean_comments(d: Dict):
-    for k, v in list(d.items()):
-        if k.startswith("__"):
-            del d[k]
-        elif type(v) is dict:
-            config_clean_comments(v)
+	for k, v in list(d.items()):
+		if k.startswith("__"):
+			del d[k]
+		elif type(v) is dict:
+			config_clean_comments(v)
+
 
 config_clean_comments(CONFIG)
 
