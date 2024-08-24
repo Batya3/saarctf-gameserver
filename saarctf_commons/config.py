@@ -57,13 +57,13 @@ def config_clean_comments(d: Dict):
 
 config_clean_comments(CONFIG)
 
-POSTGRES = CONFIG.get('databases', {}).get('postgres', {})
-REDIS = CONFIG.get('databases', {}).get('redis', {})
-RABBITMQ = CONFIG.get('databases', {}).get('rabbitmq', {})
+POSTGRES: Dict = CONFIG['databases']['postgres']
+POSTGRES_USE_SOCKET = os.environ.get('SAARCTF_POSTGRES_USE_SOCKET', 'False').lower() == 'true'
+REDIS: Dict = CONFIG['databases']['redis']
+RABBITMQ: Dict = CONFIG['databases']['rabbitmq'] if 'rabbitmq' in CONFIG['databases'] else None
 
-
-SCOREBOARD_PATH: str = CONFIG.get['scoreboard_path']
-CHECKER_PACKAGES_PATH: str = CONFIG.get['checker_packages_path'].rstrip('/')
+SCOREBOARD_PATH: str = CONFIG['scoreboard_path']
+CHECKER_PACKAGES_PATH: str = CONFIG['checker_packages_path'].rstrip('/')
 CHECKER_PACKAGES_LFS: Optional[str] = CHECKER_PACKAGES_PATH + '/lfs' if os.name != 'nt' else None
 PATCHES_PATH: str = CONFIG.get('patches_path', CHECKER_PACKAGES_PATH + '/patches').rstrip('/')
 PATCHES_PUBLIC_PATH: str = CONFIG.get('patches_public_path', SCOREBOARD_PATH + '/patches').rstrip('/')
@@ -76,23 +76,23 @@ GRAFANA_URL: Optional[str] = CONFIG.get('grafana_url', False) or None
 PATCHES_URL: Optional[str] = CONFIG.get('patches_url', False) or (SCOREBOARD_URL.rstrip('/') + '/patches' if SCOREBOARD_URL else None)
 
 SECRET_FLAG_KEY: bytes = binascii.unhexlify(CONFIG['secret_flags'])
-FLAG_ROUNDS_VALID: int = CONFIG.get['flags_rounds_valid']
-NOP_TEAM_ID: int = CONFIG.get['nop_team_id']
+FLAG_ROUNDS_VALID: int = CONFIG['flags_rounds_valid']
+NOP_TEAM_ID: int = CONFIG['nop_team_id']
 
-EXTERNAL_TIMER: bool = 'external_timer' in CONFIG and CONFIG.get['external_timer']
+EXTERNAL_TIMER: bool = 'external_timer' in CONFIG and CONFIG['external_timer']
 
 # --- IPs ---
 
 vulnbox_ip: List[Tuple[int, int, int]] = \
-	[tuple(component) if type(component) is list else (1, 1, component) for component in CONFIG.get['network']['vulnbox_ip']]  # type: ignore
+	[tuple(component) if type(component) is list else (1, 1, component) for component in CONFIG['network']['vulnbox_ip']]  # type: ignore
 gateway_ip: List[Tuple[int, int, int]] = \
-	[tuple(component) if type(component) is list else (1, 1, component) for component in CONFIG.get['network']['gateway_ip']]  # type: ignore
+	[tuple(component) if type(component) is list else (1, 1, component) for component in CONFIG['network']['gateway_ip']]  # type: ignore
 testbox_ip: List[Tuple[int, int, int]] = \
-	[tuple(component) if type(component) is list else (1, 1, component) for component in CONFIG.get['network']['testbox_ip']]  # type: ignore
+	[tuple(component) if type(component) is list else (1, 1, component) for component in CONFIG['network']['testbox_ip']]  # type: ignore
 network_ip: List[Tuple[int, int, int]] = \
-	[tuple(component) if type(component) is list else (1, 1, component) for component in CONFIG.get['network']['team_range'][:4]]  # type: ignore
+	[tuple(component) if type(component) is list else (1, 1, component) for component in CONFIG['network']['team_range'][:4]]  # type: ignore
 vpn_peer_ip: List[Tuple[int, int, int]] = \
-	[tuple(component) if type(component) is list else (1, 1, component) for component in CONFIG.get['network']['vpn_peer_ips']]  # type: ignore
+	[tuple(component) if type(component) is list else (1, 1, component) for component in CONFIG['network']['vpn_peer_ips']]  # type: ignore
 network_size = CONFIG['network']['team_range'][4]
 assert network_size in (8, 16, 24, 32), 'Team network size unsupported'
 
