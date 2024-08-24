@@ -57,10 +57,10 @@ def config_clean_comments(d: Dict):
 
 config_clean_comments(CONFIG)
 
-POSTGRES: Dict = CONFIG['databases']['postgres']
-POSTGRES_USE_SOCKET = os.environ.get('SAARCTF_POSTGRES_USE_SOCKET', 'False').lower() == 'true'
-REDIS: Dict = CONFIG['databases']['redis']
-RABBITMQ: Dict = CONFIG['databases']['rabbitmq'] if 'rabbitmq' in CONFIG['databases'] else None
+POSTGRES = CONFIG.get('databases', {}).get('postgres', {})
+REDIS = CONFIG.get('databases', {}).get('redis', {})
+RABBITMQ = CONFIG.get('databases', {}).get('rabbitmq', {})
+
 
 SCOREBOARD_PATH: str = CONFIG['scoreboard_path']
 CHECKER_PACKAGES_PATH: str = CONFIG['checker_packages_path'].rstrip('/')
