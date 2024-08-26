@@ -92,8 +92,15 @@ gateway_ip = [tuple(component) if isinstance(component, list) else (1, 1, compon
 testbox_ip = [tuple(component) if isinstance(component, list) else (1, 1, component) for component in network.get('testbox_ip', [])]
 network_ip = [tuple(component) if isinstance(component, list) else (1, 1, component) for component in network.get('team_range', [])[:4]]
 vpn_peer_ip = [tuple(component) if isinstance(component, list) else (1, 1, component) for component in network.get('vpn_peer_ips', [])]
-network_size = network.get('team_range', [0])[4]
-assert network_size in (8, 16, 24, 32), 'Team network size unsupported'
+team_range = network.get('team_range', [0])
+
+# Проверка длины списка перед доступом к элементу
+if len(team_range) > 4:
+    network_size = team_range[4]
+    assert network_size in (8, 16, 24, 32), 'Team network size unsupported'
+else:
+    raise IndexError("team_range in configuration does not have enough elements. Expected at least 5.")
+
 
 
 def team_id_to_vulnbox_ip(id: int) -> str:
