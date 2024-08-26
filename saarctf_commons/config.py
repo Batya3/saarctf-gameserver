@@ -92,14 +92,19 @@ gateway_ip = [tuple(component) if isinstance(component, list) else (1, 1, compon
 testbox_ip = [tuple(component) if isinstance(component, list) else (1, 1, component) for component in network.get('testbox_ip', [])]
 network_ip = [tuple(component) if isinstance(component, list) else (1, 1, component) for component in network.get('team_range', [])[:4]]
 vpn_peer_ip = [tuple(component) if isinstance(component, list) else (1, 1, component) for component in network.get('vpn_peer_ips', [])]
-team_range = network.get('team_range', [0])
+team_range = network.get('team_range', [0, 0, 0, 0, 24])  # Значения по умолчанию
 
-# Проверка длины списка перед доступом к элементу
 if len(team_range) > 4:
     network_size = team_range[4]
-    assert network_size in (8, 16, 24, 32), 'Team network size unsupported'
+    assert network_size in (8, 16, 24, 32), 'Unsupported network size'
 else:
-    raise IndexError("team_range in configuration does not have enough elements. Expected at least 5.")
+    network_size = 24  # значение по умолчанию
+
+# Пример обработки IP адресов на основе team_id
+team_id = 1  # пример
+vulnbox_ip = [str(((team_id // a) % b) + c) for a, b, c in zip(*team_range[:3])]
+vulnbox_ip_address = '.'.join(vulnbox_ip)
+print(f"Vulnbox IP: {vulnbox_ip_address}")
 
 
 
