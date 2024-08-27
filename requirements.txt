@@ -1,5 +1,6 @@
-flask==2.3.3
-flask_sqlalchemy
+flask==2.1.2
+flask_sqlalchemy==2.4.4
+Flask-SQLAlchemy==2.4.4
 flask_admin
 sqlalchemy
 Flask-Migrate
