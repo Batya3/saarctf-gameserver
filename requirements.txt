@@ -1,13 +1,13 @@
-Flask==2.1.1
-Flask-SQLAlchemy==2.5.1
+flask
+flask_sqlalchemy
 flask_admin
 sqlalchemy
 Flask-Migrate
 Flask-APScheduler
 psycopg2-binary
 redis
-celery
-celery[redis]
+celery==4.4.6
+celery[redis]==4.4.6
 flower<1.0.0
 setproctitle
 filelock
