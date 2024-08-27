@@ -1,5 +1,5 @@
 flask==2.1.2
-flask_sqlalchemy==2.4.4
+flask_sqlalchemy
 Flask-SQLAlchemy==2.4.4
 flask_admin
 sqlalchemy
